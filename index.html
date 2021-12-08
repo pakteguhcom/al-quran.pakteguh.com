@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Digital Qur'an</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        #content {
+            max-width: 1024px;
+            padding: 2.5rem 0;
+            margin: auto;
+        }
+
+        #content .surahItem {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid #cbcbcb;
+            padding: 1rem 0.5rem;
+        }
+
+        #content .surahItem .additionalInfo {
+            text-align: right;
+        }
+    </style>
+    <script type="module">
+        import apiEndpoint from './js/api-endpoint.js'
+
+        document.addEventListener("DOMContentLoaded", main)
+
+        /**
+        * Main function
+        */
+        async function main() {
+            const endpoint = apiEndpoint.listSurah.url
+
+            try {
+                const response = await fetch(endpoint)
+                const responseJSON = await response.json()
+                const quranData = responseJSON.data
+                console.log(quranData)
+                renderListSurahElements(quranData)
+            } catch (trace) {
+                console.error(trace)
+            }
+        }
+
+        /**
+         * Get Content Container DOM Element
+         */
+        function getContentContainer () {
+            return document.querySelector('#content')
+        }
+
+        function SurahItem({ name, translation, type, numberSurah, ayahCount }) {
+            return `
+                <div class="surahItem">
+                    <div class="nameInfo">
+                        <a href="detail.html?numberSurah=${numberSurah}">${name}</a>
+                        <div>${translation}</div>
+                    </div>
+                    <div class="additionalInfo">
+                        <div>${type}</div>
+                        <div>${numberSurah}:${ayahCount}</div>
+                    </div>
+                </div>
+            `
+        }
+
+        function renderListSurahElements(quranData) {
+            const surahListElements = quranData.reduce((elements, surah) => {
+                return elements += SurahItem({
+                    name: surah.asma.id.long,
+                    translation: surah.asma.translation.id,
+                    type: surah.type.id,
+                    numberSurah: surah.number,
+                    ayahCount: surah.ayahCount
+                })
+            }, '')
+
+            getContentContainer().innerHTML = surahListElements
+        }
+    </script>
+</head>
+<body>
+    <div id="content"></div>
+</body>
+</html>
