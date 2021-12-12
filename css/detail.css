@@ -1,0 +1,43 @@
+#content {
+    max-width: 1024px;
+    padding: 2.5rem 0;
+    margin: auto;
+}
+
+#content .ayahItem {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem 0.8rem;
+    border-bottom: 1px solid #cbcbcb;
+    scroll-margin: 5rem;
+}
+
+#content .ayahItem.active {
+    background-color: #f4fafe;
+}
+
+#content .ayahItem .arabic {
+    text-align: right;
+    margin-bottom: 1.8rem;
+    font-family: 'Amiri', serif;
+    font-size: 1.8rem;
+}
+
+#content .ayahItem .read {
+    margin-bottom: 0.8rem;
+}
+
+#audioPanel {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: white;
+    padding: 0.5rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#audioPanel audio {
+    width: 100%;
+}
