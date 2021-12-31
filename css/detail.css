@@ -38,6 +38,45 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+#surahInfo {
+    background: #008fc4;
+    padding: 1.5rem;
+    color: white;
+    border-radius: 0.8rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0px 4px 20px 15px rgba(214, 243, 252, 0.25);
+}
+
 #audioPanel audio {
     width: 100%;
+}
+
+#ayahContainer .ayahItem .read {
+    color: #1b83e4;
+    font-family: 'Nunito', sans-serif;
+}
+
+#ayahContainer .ayahItem .translation {
+    color: #5d5d5d;;
+    font-family: 'Nunito', sans-serif;
+}
+
+#ayahContainer .ayahItem .topContainer {
+    margin-bottom: 1.5rem;
+}
+
+#ayahContainer .ayahItem .topContainer button {
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    padding: 0.2rem;
+    clip-path: circle();
+    background: #008fc4;
+    color: white;
+}
+
+#ayahContainer .ayahItem .topContainer button span {
+    font-size: 1.2rem;
 }

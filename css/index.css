@@ -1,17 +1,49 @@
-#content {
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.container {
     max-width: 1024px;
     padding: 2.5rem 0;
     margin: auto;
 }
 
+.container .greeting {
+    
+}
+
+.container .banner {
+    background: #008fc4;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 1.2rem;
+    margin-top: 1.3rem;
+    margin-bottom: 1.4rem;
+    border-radius: 0.8rem;
+}
+
 #content .surahItem {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1.25rem;
     border-bottom: 1px solid #cbcbcb;
-    padding: 1rem 0.5rem;
+    padding: 2.25rem 0.8rem;
+    text-decoration: none;
+    font-family: 'Nunito', sans-serif;
+}
+
+#content .surahItem:hover {
+    background-color: #f4fafe;
+}
+
+#content .surahItem .nameInfo .name {
+    font-weight: bold;
+    color: #008fc4;        
+}
+
+#content .surahItem .nameInfo .translation {
+    color: #5d5d5d;
+    font-size: 0.85rem;
 }
 
 #content .surahItem .additionalInfo {
     text-align: right;
+    color: #5d5d5d;
 }

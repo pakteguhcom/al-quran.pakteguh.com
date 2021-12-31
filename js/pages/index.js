@@ -37,16 +37,16 @@ function getContentContainer () {
  */
 function SurahItem({ name, translation, type, numberSurah, ayahCount }) {
     return `
-        <div class="surahItem">
+        <a class="surahItem" href="detail.html?numberSurah=${numberSurah}">
             <div class="nameInfo">
-                <a href="detail.html?numberSurah=${numberSurah}">${name}</a>
-                <div>${translation}</div>
+                <div class="name">${name}</div>
+                <div class="translation">${translation}</div>
             </div>
             <div class="additionalInfo">
                 <div>${type}</div>
                 <div>${numberSurah}:${ayahCount}</div>
             </div>
-        </div>
+        </a>
     `
 }
 

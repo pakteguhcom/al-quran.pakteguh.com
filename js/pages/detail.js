@@ -43,6 +43,10 @@ function getContentContainer () {
     return document.querySelector('#content')
 }
 
+function getAyahContainer () {
+    return getContentContainer().querySelector('#ayahContainer')
+}
+
 /**
  * Get Audio Control Element
  */
@@ -62,9 +66,11 @@ function getAudioControl () {
 function AyahItem({ surahNumber = '', ayahNumber = '', arabic, read, translation }) {
     const surahAyahElement = (surahNumber !== '' && ayahNumber !== '')
         ? `
-            <div>
+            <div class="topContainer">
                 <div class="surahAndAyahInfo">${surahNumber}:${ayahNumber}</div>
-                <button>Play</button>
+                <button>
+                    <span class="material-icons">play_arrow</span>                
+                </button>
             </div>
         ` : ''
 
@@ -88,7 +94,8 @@ function AyahItem({ surahNumber = '', ayahNumber = '', arabic, read, translation
  * Render quran ayah item elements
  */
 function renderListAyahElements (quranData) {
-    const contentContainer = getContentContainer()
+    console.log(quranData)
+    const ayahContainer = getAyahContainer()
     const audioControl = getAudioControl()
     const preBismillah = quranData.preBismillah
     const defaultValueListAyahElements = (preBismillah !== null) 
@@ -108,7 +115,7 @@ function renderListAyahElements (quranData) {
         })
     }, defaultValueListAyahElements)
 
-    contentContainer.innerHTML = listAyahElements
+    ayahContainer.innerHTML = listAyahElements
     audioControl.src = quranData.recitation.full
     setListAyahElementsListener(quranData)
 }
@@ -117,10 +124,10 @@ function renderListAyahElements (quranData) {
  * Set play pause audo on ayah item element
  */
 function setListAyahElementsListener (quranData) {
-    const contentContainer = getContentContainer()
     const audioControl = getAudioControl()
     const ayahsElements = getContentContainer().querySelectorAll('.ayahItem')
     let playedAyah = null
+    let isPlaying = false
 
     ayahsElements.forEach(element => {
         const buttonPlay = element.querySelector('button')
@@ -139,6 +146,7 @@ function setListAyahElementsListener (quranData) {
     })
 
     audioControl.onplaying = () => {    
+        isPlaying = true
         let listActiveAyahElement = []
         let playedAyahElement = null            
         ayahsElements.forEach(element => {
@@ -169,6 +177,7 @@ function setListAyahElementsListener (quranData) {
     }
 
     audioControl.onpause = () => {
+        isPlaying = false
         let playedAyahElement = null            
         ayahsElements.forEach(element => {
             const elementNumberOfSurahInfo = element.querySelector('.surahAndAyahInfo')
