@@ -7,15 +7,31 @@ document.addEventListener("DOMContentLoaded", main)
 */
 async function main() {
     const endpoint = apiEndpoint.listSurah.url
+    const loadingAnimation = getLoadingAnimationContainer()
+    const mainApp = getMainAppContainer()
 
     try {
+        mainApp.style.display = 'none'
+        loadingAnimation.style.display = 'flex'
+        
         const response = await fetch(endpoint)
         const responseJSON = await response.json()
         const quranData = responseJSON.data
         renderListSurahElements(quranData)
+        
+        mainApp.style.display = 'block'
+        loadingAnimation.style.display = 'none'
     } catch (trace) {
         console.error(trace)
     }
+}
+
+/**
+ * Get Main App Element Container
+ * @returns
+ */
+function getMainAppContainer () {
+    return document.querySelector('#mainApp')
 }
 
 /**
@@ -23,6 +39,14 @@ async function main() {
  */
 function getContentContainer () {
     return document.querySelector('#content')
+}
+
+/**
+ * Get Loading Animation Element Container
+ * @returns
+ */
+function getLoadingAnimationContainer () {
+    return document.querySelector('.loadingAnimation')
 }
 
 /**

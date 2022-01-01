@@ -13,6 +13,12 @@ async function main() {
             const response = await fetch(endpoint)
             const responseJSON = await response.json()
             const quranData = responseJSON.data
+            renderNavbar({ 
+                name: quranData.asma.id.short,
+                number: quranData.number,
+                ayahCount: quranData.ayahCount,
+                type: quranData.type.id
+            })
             renderListAyahElements(quranData)
         }
     } catch (trace) {
@@ -37,12 +43,23 @@ function isNumberSurahValid (value) {
 }
 
 /**
+ * Get Navbar Element Container
+ */
+function getNavbarContainer () {
+    return document.querySelector('#navbar')
+}
+
+/**
  * Get Content Container DOM Element
  */
 function getContentContainer () {
     return document.querySelector('#content')
 }
 
+/**
+ * Get Ayah Container Element
+ * @returns
+ */
 function getAyahContainer () {
     return getContentContainer().querySelector('#ayahContainer')
 }
@@ -57,17 +74,17 @@ function getAudioControl () {
 /**
  * Create string ayah item element
  * @param {object} quranData
- * @param {string|number} quranData.surahNumber
+ * @param {string|number} quranData.juzNumber
  * @param {string|number} quranData.ayahNumber
  * @param {string} quranData.arabic}
  * @param {string} quranData.read
  * @param {string} quranData.translation
  */
-function AyahItem({ surahNumber = '', ayahNumber = '', arabic, read, translation }) {
-    const surahAyahElement = (surahNumber !== '' && ayahNumber !== '')
+function AyahItem({ juzNumber = '', ayahNumber = '', arabic, read, translation }) {
+    const surahAyahElement = (juzNumber !== '' && ayahNumber !== '')
         ? `
             <div class="topContainer">
-                <div class="surahAndAyahInfo">${surahNumber}:${ayahNumber}</div>
+                <div class="surahAndAyahInfo">${juzNumber}:${ayahNumber}</div>
                 <button>
                     <span class="material-icons">play_arrow</span>                
                 </button>
@@ -91,10 +108,27 @@ function AyahItem({ surahNumber = '', ayahNumber = '', arabic, read, translation
 }
 
 /**
+ * Render Navbar Children with Surah Information
+ * @param {object} surah 
+ * @param {string} surah.type
+ * @param {string|number} surah.number
+ * @param {string} surah.name
+ * @param {string|number} surah.ayahCount
+ */
+function renderNavbar({ type, number, name, ayahCount }) {
+    const surahTypeElement = getNavbarContainer().querySelector('.surahType')
+    const surahNameElement = getNavbarContainer().querySelector('.surahName')
+    const numberAyahElement = getNavbarContainer().querySelector('.numberAyah')
+    surahNameElement.innerText = `${number}. ${name}`
+    surahTypeElement.innerText = type
+    numberAyahElement.innerText = ayahCount
+    
+}
+
+/**
  * Render quran ayah item elements
  */
 function renderListAyahElements (quranData) {
-    console.log(quranData)
     const ayahContainer = getAyahContainer()
     const audioControl = getAudioControl()
     const preBismillah = quranData.preBismillah
@@ -107,7 +141,7 @@ function renderListAyahElements (quranData) {
 
     const listAyahElements = quranData.ayahs.reduce((elements, ayah) => {
         return elements + AyahItem({
-            surahNumber: quranData.number,
+            juzNumber: ayah.juz,
             ayahNumber: ayah.number.insurah,
             arabic: ayah.text.ar,
             read: ayah.text.read,
@@ -133,7 +167,7 @@ function setListAyahElementsListener (quranData) {
         const buttonPlay = element.querySelector('button')
         const elementNumberOfSurahInfo = element.querySelector('.surahAndAyahInfo')
         if (elementNumberOfSurahInfo) {
-            const [surahNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
+            const [juzNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
             const ayahObjectData = quranData.ayahs.find(ayah => ayah.number.insurah == ayahNumber)
             const ayahAudioUrl = ayahObjectData.audio.url
 
@@ -152,7 +186,7 @@ function setListAyahElementsListener (quranData) {
         ayahsElements.forEach(element => {
             const elementNumberOfSurahInfo = element.querySelector('.surahAndAyahInfo')
             if (elementNumberOfSurahInfo) {
-                const [surahNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
+                const [juzNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
 
                 if (element.classList.contains('active')) {
                     listActiveAyahElement.push(element)
@@ -182,7 +216,7 @@ function setListAyahElementsListener (quranData) {
         ayahsElements.forEach(element => {
             const elementNumberOfSurahInfo = element.querySelector('.surahAndAyahInfo')
             if (elementNumberOfSurahInfo) {
-                const [surahNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
+                const [juzNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
                 if (playedAyah) {
                     if (ayahNumber === playedAyah.toString()) {
                         playedAyahElement = element

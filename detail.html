@@ -10,16 +10,23 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/detail.css" />    
     <script type="module" src="./js/pages/detail.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
-    <div id="content">
-        <div id="surahInfo">
-            <div>Q.S Al - Fatihah</div>
+    <div id="mainApp">
+        <div id="navbar">
+            <div class="surahType"></div>
+            <div class="surahName"></div>
+            <div class="numberAyah"></div>
         </div>
-        <div id="ayahContainer"></div>
-    </div>
-    <div id="audioPanel">
-        <audio controls></audio>
+        <div class="container">
+            <div id="content">
+                <div id="ayahContainer"></div>
+            </div>
+        </div>
+        <div id="audioPanel">
+            <audio controls></audio>
+        </div>
     </div>
 </body>
 </html>

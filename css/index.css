@@ -7,17 +7,79 @@
 }
 
 .container .greeting {
-    
+    margin-left: 0.25rem;
+    font-size: 1.25rem;
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 1rem;
+    color: #888888;
+    font-weight: 600;
 }
 
 .container .banner {
-    background: #008fc4;
+    position: relative;
+    background: linear-gradient(101.69deg, #42B7E2 23.29%, #008FC4 75.93%);
     color: white;
     padding: 1.5rem;
     border-radius: 1.2rem;
     margin-top: 1.3rem;
-    margin-bottom: 1.4rem;
+    margin-bottom: 2.5rem;
     border-radius: 0.8rem;
+    height: 10rem;
+    overflow: hidden;
+    box-shadow: 0px 5px 20px 8px rgba(0, 143, 196, 0.25);
+}
+
+.container .banner .appName div:first-child {
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: 'Nunito', sans-serif;
+    color: #ebebeb;
+}
+
+.container .banner .appName div:last-child {
+    font-size: 1.4rem;
+    font-weight: 500;
+    font-family: 'Nunito', sans-serif;
+}
+
+.container .banner .quranIcon {
+    position: absolute;
+    right: -3.5rem;
+    bottom: -3.5rem;
+    width: 16rem;
+    height: 16rem;
+    background-image: url('../images/quran.svg');
+    background-size: cover;
+    background-position: center;
+}
+
+@media screen and (min-width: 768px) {
+    .container .banner .quranIcon {
+        position: absolute;
+        right: -2rem;
+        bottom: -4rem;
+        width: 18rem;
+        height: 18rem;
+    }   
+}
+
+.loadingAnimation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.loadingAnimation lottie-player {
+    width: 20rem;
+    height: 20rem;
+}
+
+.loadingAnimation .text {
+    margin-top: 2rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    color: #5d5d5d;
 }
 
 #content .surahItem {
