@@ -7,6 +7,12 @@ document.addEventListener("DOMContentLoaded", main)
  */
 async function main() {
     try {
+        const loadingAnimation = getLoadingAnimationContainer()
+        const mainApp = getMainAppContainer()
+        
+        loadingAnimation.style.display = 'flex'
+        mainApp.style.display = 'none'
+
         const numberSurah = getNumberSurah()
         if (isNumberSurahValid(numberSurah)) {
             const endpoint = apiEndpoint.detailSurah.url(numberSurah)
@@ -20,6 +26,9 @@ async function main() {
                 type: quranData.type.id
             })
             renderListAyahElements(quranData)
+
+            loadingAnimation.style.display = 'none'
+            mainApp.style.display = 'block'
         }
     } catch (trace) {
         console.error(trace)
@@ -40,6 +49,21 @@ function getNumberSurah () {
  */
 function isNumberSurahValid (value) {
     return (value >= 1 && value <= 114) ? true : false
+}
+
+/**
+ * Get Loading Animation DOM Element Container
+ */
+function getLoadingAnimationContainer () {
+    return document.querySelector('.loadingAnimation')
+}
+
+/**
+ * Get Main Application DOM Element Container
+ * @returns
+ */
+function getMainAppContainer () {
+    return document.querySelector('#mainApp')
 }
 
 /**
@@ -121,7 +145,7 @@ function renderNavbar({ type, number, name, ayahCount }) {
     const numberAyahElement = getNavbarContainer().querySelector('.numberAyah')
     surahNameElement.innerText = `${number}. ${name}`
     surahTypeElement.innerText = type
-    numberAyahElement.innerText = ayahCount
+    numberAyahElement.innerText = `${ayahCount} ayat`
     
 }
 
@@ -172,9 +196,19 @@ function setListAyahElementsListener (quranData) {
             const ayahAudioUrl = ayahObjectData.audio.url
 
             buttonPlay.onclick = () => {
-                audioControl.src = ayahAudioUrl
-                playedAyah = Number(ayahNumber)
-                audioControl.play()
+                if (playedAyah && Number(ayahNumber) === playedAyah) {
+                    isPlaying ? audioControl.pause() : audioControl.play()
+                } else {
+                    audioControl.src = ayahAudioUrl
+                    playedAyah = Number(ayahNumber)
+                    audioControl.play()
+                }
+
+                if (isPlaying) {
+                    buttonPlay.querySelector('.material-icons').innerHTML = 'play_arrow'
+                } else {
+                    buttonPlay.querySelector('.material-icons').innerHTML = 'pause'
+                }
             }
         }
     })
@@ -239,8 +273,10 @@ function setListAyahElementsListener (quranData) {
             audioControl.src = ayahAudioUrl
             audioControl.play()
             playedAyah = nextAyahNumber
+            isPlaying = true
         } else {
             playedAyah = null
+            isPlaying = false
         }
     }
 }

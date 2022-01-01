@@ -82,6 +82,10 @@
     color: #5d5d5d;
 }
 
+#mainApp {
+    display: none;
+}
+
 #content .surahItem {
     display: flex;
     justify-content: space-between;
