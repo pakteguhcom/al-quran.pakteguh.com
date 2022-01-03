@@ -50,6 +50,13 @@ function getLoadingAnimationContainer () {
 }
 
 /**
+ * Get Navbar DOM element container
+ */
+function getNavbarContainer () {
+    return document.querySelector('#navbar')
+}
+
+/**
  * Build element for surah item
  * @param {object} quranData
  * @param {string} quranData.name
@@ -79,6 +86,8 @@ function SurahItem({ name, translation, type, numberSurah, ayahCount }) {
  * @param {*} quranData 
  */
 function renderListSurahElements(quranData) {
+    const searchBar = getNavbarContainer().querySelector('.searchContainer input')
+
     const surahListElements = quranData.reduce((elements, surah) => {
         return elements += SurahItem({
             name: surah.asma.id.long,
@@ -90,4 +99,22 @@ function renderListSurahElements(quranData) {
     }, '')
 
     getContentContainer().innerHTML = surahListElements
+    
+    searchBar.oninput = (event) => {
+        const filteredData = quranData.filter(surah => {
+            const surahName = surah.asma.id.long.toLowerCase().replace(/\'+/g, '')
+            const searchQuery = event.target.value.toLowerCase()
+            return surahName.includes(searchQuery)
+        })
+
+        getContentContainer().innerHTML = filteredData.reduce((elements, surah) => {
+            return elements += SurahItem({
+                name: surah.asma.id.long,
+                translation: surah.asma.translation.id,
+                type: surah.type.id,
+                numberSurah: surah.number,
+                ayahCount: surah.ayahCount
+            })
+        }, '')
+    }
 }

@@ -6,11 +6,15 @@ document.addEventListener("DOMContentLoaded", main)
  * Main function
  */
 async function main() {
+    const loadingAnimation = getLoadingAnimationContainer()
+    const notFoundAnimation = getNotFoundAnimationContainer()
+    const errorAnimation = getErrorAnimationContainer()
+    const mainApp = getMainAppContainer()
+
     try {
-        const loadingAnimation = getLoadingAnimationContainer()
-        const mainApp = getMainAppContainer()
-        
         loadingAnimation.style.display = 'flex'
+        notFoundAnimation.style.display = 'none'
+        errorAnimation.style.display = 'none'
         mainApp.style.display = 'none'
 
         const numberSurah = getNumberSurah()
@@ -21,17 +25,24 @@ async function main() {
             const quranData = responseJSON.data
             renderNavbar({ 
                 name: quranData.asma.id.short,
-                number: quranData.number,
-                ayahCount: quranData.ayahCount,
-                type: quranData.type.id
+                number: quranData.number,                
             })
             renderListAyahElements(quranData)
 
             loadingAnimation.style.display = 'none'
             mainApp.style.display = 'block'
+            return
         }
+        
+        notFoundAnimation.style.display = 'flex'
+        loadingAnimation.style.display = 'none'
+        mainApp.style.display = 'none'
     } catch (trace) {
         console.error(trace)
+        loadingAnimation.style.display = 'none'
+        notFoundAnimation.style.display = 'none'
+        errorAnimation.style.display = 'flex'
+        mainApp.style.display = 'none'
     }
 }
 
@@ -56,6 +67,22 @@ function isNumberSurahValid (value) {
  */
 function getLoadingAnimationContainer () {
     return document.querySelector('.loadingAnimation')
+}
+
+/**
+ * Get Not Found Animation DOM Element Container
+ * @returns
+ */
+function getNotFoundAnimationContainer () {
+    return document.querySelector('.notFoundAnimation')
+}
+
+/**
+ * Get Error Animation DOM Element Container
+ * @returns
+ */
+function getErrorAnimationContainer () {
+    return document.querySelector('.errorAnimation')   
 }
 
 /**
@@ -100,7 +127,7 @@ function getAudioControl () {
  * @param {object} quranData
  * @param {string|number} quranData.juzNumber
  * @param {string|number} quranData.ayahNumber
- * @param {string} quranData.arabic}
+ * @param {string} quranData.arabic
  * @param {string} quranData.read
  * @param {string} quranData.translation
  */
@@ -134,19 +161,16 @@ function AyahItem({ juzNumber = '', ayahNumber = '', arabic, read, translation }
 /**
  * Render Navbar Children with Surah Information
  * @param {object} surah 
- * @param {string} surah.type
  * @param {string|number} surah.number
  * @param {string} surah.name
- * @param {string|number} surah.ayahCount
  */
 function renderNavbar({ type, number, name, ayahCount }) {
-    const surahTypeElement = getNavbarContainer().querySelector('.surahType')
     const surahNameElement = getNavbarContainer().querySelector('.surahName')
-    const numberAyahElement = getNavbarContainer().querySelector('.numberAyah')
+    const backButton = getNavbarContainer().querySelector('.backButton')
     surahNameElement.innerText = `${number}. ${name}`
-    surahTypeElement.innerText = type
-    numberAyahElement.innerText = `${ayahCount} ayat`
-    
+    backButton.onclick = () => {
+        window.location.href = '/'
+    }
 }
 
 /**

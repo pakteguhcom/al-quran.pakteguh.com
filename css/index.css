@@ -9,8 +9,19 @@
 .container .greeting {
     margin-left: 0.25rem;
     font-size: 1.25rem;
+    font-family: "Nunito", sans-serif;
+    margin-bottom: 0.25rem;
+    color: #888888;
+    font-weight: 600;
+}
+
+.container .bismillah {
+    margin-left: 0.25rem;
+    text-align: left;
+    font-style: italic;
+    font-size: 1.25rem;
     font-family: 'Nunito', sans-serif;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     color: #888888;
     font-weight: 600;
 }
@@ -82,8 +93,50 @@
     color: #5d5d5d;
 }
 
+#navbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background: white;
+    padding: 0.5rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    display: grid;    
+    padding: 0.8rem;
+    z-index: 99;
+    font-weight: 500;
+    font-family: 'Nunito', sans-serif;
+}
+
+#navbar .searchContainer {
+    display: flex;
+    width: 100%;
+    max-width: 1024px;
+    margin: auto;
+}
+
+#navbar .searchContainer .searchInput {
+    display: flex;
+    justify-content: space-between;
+    background-color:#e7e7e7;
+    color: #696969;
+    width: calc(100% - 3rem);
+    height: 1.5rem;
+    border-radius: 0.8rem;
+    padding: 0.4rem 1.5rem;
+}
+
+#navbar .searchContainer .searchInput input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-right: 0.5rem;
+}
+
 #mainApp {
     display: none;
+    margin-top: 2.5rem;
 }
 
 #content .surahItem {
