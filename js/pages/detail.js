@@ -211,6 +211,29 @@ function setListAyahElementsListener (quranData) {
     let playedAyah = null
     let isPlaying = false
 
+    /**
+     * Get Active Played Ayah Recitation DOM Element
+     * @param {void} dispatch 
+     * @returns 
+     */
+    const getPlayedAyahElement = (dispatch = (element) => {}) => {
+        let playedAyahElement = null
+        ayahsElements.forEach(element => {
+            const elementNumberOfSurahInfo = element.querySelector('.surahAndAyahInfo')
+            if (elementNumberOfSurahInfo) {
+                const [juzNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
+                if (playedAyah) {
+                    if (ayahNumber === playedAyah.toString()) {
+                        playedAyahElement = element
+                    }
+                }
+            }
+            dispatch(element)
+        })
+
+        return playedAyahElement
+    }
+
     ayahsElements.forEach(element => {
         const buttonPlay = element.querySelector('button')
         const elementNumberOfSurahInfo = element.querySelector('.surahAndAyahInfo')
@@ -222,16 +245,21 @@ function setListAyahElementsListener (quranData) {
             buttonPlay.onclick = () => {
                 if (playedAyah && Number(ayahNumber) === playedAyah) {
                     isPlaying ? audioControl.pause() : audioControl.play()
+                } else if (playedAyah && Number(ayahNumber) !== playedAyah) {
+                    let playedAyahElement = getPlayedAyahElement()
+
+                    if (playedAyahElement) {
+                        const buttonPlay = playedAyahElement.querySelector('button')
+                        buttonPlay.querySelector('.material-icons').innerHTML = 'play_arrow'
+                    }
+
+                    audioControl.src = ayahAudioUrl
+                    playedAyah = Number(ayahNumber)
+                    audioControl.play()
                 } else {
                     audioControl.src = ayahAudioUrl
                     playedAyah = Number(ayahNumber)
                     audioControl.play()
-                }
-
-                if (isPlaying) {
-                    buttonPlay.querySelector('.material-icons').innerHTML = 'play_arrow'
-                } else {
-                    buttonPlay.querySelector('.material-icons').innerHTML = 'pause'
                 }
             }
         }
@@ -240,21 +268,9 @@ function setListAyahElementsListener (quranData) {
     audioControl.onplaying = () => {    
         isPlaying = true
         let listActiveAyahElement = []
-        let playedAyahElement = null            
-        ayahsElements.forEach(element => {
-            const elementNumberOfSurahInfo = element.querySelector('.surahAndAyahInfo')
-            if (elementNumberOfSurahInfo) {
-                const [juzNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
-
-                if (element.classList.contains('active')) {
-                    listActiveAyahElement.push(element)
-                }
-
-                if (playedAyah) {
-                    if (ayahNumber === playedAyah.toString()) {
-                        playedAyahElement = element
-                    }
-                }
+        let playedAyahElement = getPlayedAyahElement(element => {
+            if (element.classList.contains('active')) {
+                listActiveAyahElement.push(element)
             }
         })
 
@@ -263,32 +279,32 @@ function setListAyahElementsListener (quranData) {
         })
 
         if (playedAyahElement) {
+            const buttonPlay = playedAyahElement.querySelector('button')
             playedAyahElement.classList.add("active")
             playedAyahElement.scrollIntoView({behavior: "smooth", block: "start"})
+            buttonPlay.querySelector('.material-icons').innerHTML = 'pause'
         }
     }
 
     audioControl.onpause = () => {
         isPlaying = false
-        let playedAyahElement = null            
-        ayahsElements.forEach(element => {
-            const elementNumberOfSurahInfo = element.querySelector('.surahAndAyahInfo')
-            if (elementNumberOfSurahInfo) {
-                const [juzNumber, ayahNumber] = elementNumberOfSurahInfo.innerText.split(':')
-                if (playedAyah) {
-                    if (ayahNumber === playedAyah.toString()) {
-                        playedAyahElement = element
-                    }
-                }
-            }
-        })
+        let playedAyahElement = getPlayedAyahElement()
 
         if (playedAyahElement) {
+            const buttonPlay = playedAyahElement.querySelector('button')
             playedAyahElement.classList.remove("active")
+            buttonPlay.querySelector('.material-icons').innerHTML = 'play_arrow'
         }
     }
 
     audioControl.onended = () => {
+        let playedAyahElement = getPlayedAyahElement()
+
+        if (playedAyahElement) {
+            const buttonPlay = playedAyahElement.querySelector('button')
+            buttonPlay.querySelector('.material-icons').innerHTML = 'play_arrow'
+        }
+
         const nextAyahNumber = playedAyah + 1
         const ayahObjectData = quranData.ayahs.find(ayah => ayah.number.insurah === nextAyahNumber)
 
