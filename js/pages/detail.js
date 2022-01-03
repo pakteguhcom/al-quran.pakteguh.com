@@ -169,7 +169,7 @@ function renderNavbar({ type, number, name, ayahCount }) {
     const backButton = getNavbarContainer().querySelector('.backButton')
     surahNameElement.innerText = `${number}. ${name}`
     backButton.onclick = () => {
-        window.location.href = '/'
+        window.location.href = './index.html'
     }
 }
 
