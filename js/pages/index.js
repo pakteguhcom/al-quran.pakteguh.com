@@ -8,11 +8,13 @@ document.addEventListener("DOMContentLoaded", main)
 async function main() {
     const endpoint = apiEndpoint.listSurah.url
     const loadingAnimation = getLoadingAnimationContainer()
+    const errorAnimation = getErrorAnimationContainer()
     const mainApp = getMainAppContainer()
 
     try {
         mainApp.style.display = 'none'
         loadingAnimation.style.display = 'flex'
+        errorAnimation.style.display = 'none'
         
         const response = await fetch(endpoint)
         const responseJSON = await response.json()
@@ -23,6 +25,9 @@ async function main() {
         loadingAnimation.style.display = 'none'
     } catch (trace) {
         console.error(trace)
+        loadingAnimation.style.display = 'none'
+        errorAnimation.style.display = 'flex'
+        mainApp.style.display = 'none'
     }
 }
 
@@ -47,6 +52,14 @@ function getContentContainer () {
  */
 function getLoadingAnimationContainer () {
     return document.querySelector('.loadingAnimation')
+}
+
+/**
+ * Get Error Animation DOM Element Container
+ * @returns
+ */
+ function getErrorAnimationContainer () {
+    return document.querySelector('.errorAnimation')   
 }
 
 /**

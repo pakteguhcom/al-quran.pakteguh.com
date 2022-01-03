@@ -93,6 +93,25 @@
     color: #5d5d5d;
 }
 
+.errorAnimation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.errorAnimation lottie-player {
+    width: 20rem;
+    height: 20rem;
+}
+
+.errorAnimation .text {
+    margin-top: 2rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    color: #5d5d5d;
+}
+
 #navbar {
     position: fixed;
     top: 0;
