@@ -78,7 +78,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
+    height: 80vh;
 }
 
 .loadingAnimation lottie-player {
@@ -97,7 +99,9 @@
     display: none;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
+    height: 80vh;
 }
 
 .errorAnimation lottie-player {
@@ -110,6 +114,11 @@
     font-family: 'Nunito', sans-serif;
     font-size: 1.6rem;
     color: #5d5d5d;
+}
+
+#mainApp {
+    display: none;
+    margin-top: 2.5rem;
 }
 
 #navbar {
@@ -151,11 +160,6 @@
     border: none;
     outline: none;
     margin-right: 0.5rem;
-}
-
-#mainApp {
-    display: none;
-    margin-top: 2.5rem;
 }
 
 #content .surahItem {
