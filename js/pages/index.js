@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", main)
 * Main function
 */
 async function main() {
+    displayBaseLayout()
     const endpoint = apiEndpoint.listSurah.url
     const loadingAnimation = getLoadingAnimationContainer()
     const errorAnimation = getErrorAnimationContainer()
@@ -29,6 +30,13 @@ async function main() {
         errorAnimation.style.display = 'flex'
         mainApp.style.display = 'none'
     }
+}
+
+/**
+ * Make base layout visible
+ */
+function displayBaseLayout () {
+    document.querySelector('.container').style.display = 'block'
 }
 
 /**

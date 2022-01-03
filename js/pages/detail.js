@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", main)
  * Main function
  */
 async function main() {
+    displayBaseLayout()
     const loadingAnimation = getLoadingAnimationContainer()
     const notFoundAnimation = getNotFoundAnimationContainer()
     const errorAnimation = getErrorAnimationContainer()
@@ -60,6 +61,13 @@ function getNumberSurah () {
  */
 function isNumberSurahValid (value) {
     return (value >= 1 && value <= 114) ? true : false
+}
+
+/**
+ * Make base layout visible
+ */
+ function displayBaseLayout () {
+    document.querySelector('.container').style.display = 'block'
 }
 
 /**
