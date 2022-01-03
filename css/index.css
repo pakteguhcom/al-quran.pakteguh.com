@@ -185,3 +185,25 @@
     text-align: right;
     color: #5d5d5d;
 }
+
+.vectorAttribution {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.vectorAttribution a {
+    font-family: 'Nunito', sans-serif;
+    text-decoration: none;
+    font-weight: 500;
+    color: #5d5d5d;
+}
+
+.vectorAttribution a:hover {
+    color: #008fc4;
+    text-decoration: underline;
+}
+
+.vectorAttribution a:focus {
+    color: #008fc4;
+    text-decoration: underline;
+}
