@@ -18,3 +18,5 @@ PHP
 ```sh
 php -S localhost:8080
 ```
+
+After start web server open `http://localhost:8080/`
