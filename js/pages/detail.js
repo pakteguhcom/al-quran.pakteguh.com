@@ -145,7 +145,7 @@ function AyahItem({ juzNumber = '', ayahNumber = '', arabic, read, translation }
             <div class="topContainer">
                 <div class="surahAndAyahInfo">${juzNumber}:${ayahNumber}</div>
                 <button>
-                    <span class="material-icons">play_arrow</span>                
+                    <span class="material-icons">play_arrow</span>
                 </button>
             </div>
         ` : ''
@@ -214,7 +214,7 @@ function renderListAyahElements (quranData) {
  * Set play pause audo on ayah item element
  */
 function setListAyahElementsListener (quranData) {
-    const audioControl = getAudioControl()
+    const audioControl = getAudioPlayer()
     const ayahsElements = getContentContainer().querySelectorAll('.ayahItem')
     let playedAyah = null
     let isPlaying = false
@@ -327,4 +327,77 @@ function setListAyahElementsListener (quranData) {
             isPlaying = false
         }
     }
+}
+
+/**
+ * Get custom audio DOM element
+ * @returns
+ */
+function getAudioPlayer () {
+    const baseElement = document.querySelector('.audioPlayer')
+    const playPauseButton = baseElement.querySelector('.playPauseButton')
+    const audioPlayer = baseElement.querySelector('audio')
+    const progressBar = baseElement.querySelector('.slider')
+    const currentTimeElement = baseElement.querySelector('.audioTime .currentTime')
+    const durationTimeElement = baseElement.querySelector('.audioTime .duration')
+
+    /**
+     * Convert seconds to time string format
+     * @param {number} number - seconds input
+     * @returns 
+     */
+    const formatTime = (number) => {
+        let hours = Math.floor(number / 3600);
+        let minutes = Math.floor((number - (hours * 3600)) / 60);
+        let seconds = Math.floor(number - (hours * 3600) - (minutes * 60));
+        let H, M, S;
+        if (hours < 10) H = ("0" + hours);
+        if (minutes < 10) M = ("0" + minutes);
+        if (seconds < 10) S = ("0" + seconds);
+
+        if (hours > 0) {
+            return (H || hours) + ':' + (M || minutes) + ':' + (S || seconds);
+        } else {
+            return (M || minutes) + ':' + (S || seconds);
+        }
+    };
+
+    playPauseButton.addEventListener("click", () => {
+        const isPlaying = !audioPlayer.paused
+        isPlaying ? audioPlayer.pause() : audioPlayer.play()
+    })
+
+    audioPlayer.addEventListener("play", () => {
+        const buttonIcon = playPauseButton.querySelector('.material-icons')
+        buttonIcon.innerHTML = 'pause'
+    })
+
+    audioPlayer.addEventListener("pause", () => {
+        const buttonIcon = playPauseButton.querySelector('.material-icons')
+        buttonIcon.innerHTML = 'play_arrow'
+    })
+
+    audioPlayer.addEventListener("canplay", () => {
+        progressBar.max = audioPlayer.duration
+        progressBar.value = audioPlayer.currentTime
+    })
+
+    audioPlayer.addEventListener("timeupdate", () => {
+        currentTimeElement.innerText = formatTime(audioPlayer.currentTime)
+        progressBar.value = audioPlayer.currentTime
+    })
+
+    audioPlayer.addEventListener("durationchange", () => {
+        durationTimeElement.innerText = formatTime(audioPlayer.duration)
+    })
+
+    progressBar.addEventListener('input', () => {
+        audioPlayer.pause()
+        audioPlayer.currentTime = progressBar.value;
+        setTimeout(() => {
+            audioPlayer.play()
+        }, 100)
+    })
+
+    return audioPlayer
 }
