@@ -91,12 +91,15 @@ function SurahItem({ name, translation, type, numberSurah, ayahCount }) {
     return `
         <a class="surahItem" href="detail.html?numberSurah=${numberSurah}">
             <div class="nameInfo">
-                <div class="name">${name}</div>
-                <div class="translation">${translation}</div>
+                <div class="number">${numberSurah}</div>
+                <div>
+                    <div class="name">${name}</div>
+                    <div class="translation">${translation}</div>
+                </div>
             </div>
             <div class="additionalInfo">
                 <div>${type}</div>
-                <div>${numberSurah}:${ayahCount}</div>
+                <div>${ayahCount} Ayat</div>
             </div>
         </a>
     `

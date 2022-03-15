@@ -143,10 +143,12 @@ function AyahItem({ juzNumber = '', ayahNumber = '', arabic, read, translation }
     const surahAyahElement = (juzNumber !== '' && ayahNumber !== '')
         ? `
             <div class="topContainer">
-                <div class="surahAndAyahInfo">${juzNumber}:${ayahNumber}</div>
+                <div class="surahAndAyahInfo">${juzNumber}:${ayahNumber}</div>                
                 <button>
                     <span class="material-icons">play_arrow</span>
                 </button>
+                <div>Juz ${juzNumber}</div>
+                <div class="ayahNumber">${ayahNumber}</div>
             </div>
         ` : ''
 

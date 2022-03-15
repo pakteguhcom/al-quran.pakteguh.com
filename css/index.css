@@ -175,6 +175,24 @@
     background-color: #f4fafe;
 }
 
+#content .surahItem .nameInfo {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#content .surahItem .nameInfo .number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.95rem;
+    clip-path: circle();
+    border-radius: 50%;
+    background-color: #008fc4;
+    color: white;
+}
+
 #content .surahItem .nameInfo .name {
     font-weight: bold;
     color: #008fc4;        

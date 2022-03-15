@@ -148,11 +148,18 @@
 }
 
 #ayahContainer .ayahItem .topContainer {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Nunito', sans-serif;
+}
+
+#ayahContainer .ayahItem .topContainer .surahAndAyahInfo {
+    display: none;
 }
 
 #ayahContainer .ayahItem .topContainer button {
-    margin-top: 0.25rem;
     display: flex;
     align-items: center;
     border: none;
@@ -165,6 +172,19 @@
 
 #ayahContainer .ayahItem .topContainer button span {
     font-size: 1.2rem;
+}
+
+#ayahContainer .ayahItem .topContainer .ayahNumber {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    clip-path: circle();
+    font-size: 0.85rem;
+    border-radius: 50%;
+    border: 1px solid #008fc4;
+    color: #008fc4;
 }
 
 #audioPanel {
@@ -265,4 +285,11 @@
     background-color: #bebebe;
     border-radius: 0.8rem;
     cursor: pointer;
+}
+
+@media screen and (min-width: 640px) {
+    #content .ayahItem .arabic {
+        font-size: 2.1rem;
+        line-height: 5rem;
+    }
 }
