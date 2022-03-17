@@ -27,7 +27,7 @@ async function main() {
             const responseJSON = await response.json()
             const quranData = responseJSON.data
             renderNavbar({ 
-                name: quranData.asma.id.short,
+                name: (getLanguage() === listLanguage.en) ? quranData.asma.en.short : quranData.asma.id.short,
                 number: quranData.number,                
             })
             renderListAyahElements(quranData)
