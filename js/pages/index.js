@@ -116,7 +116,7 @@ function SurahItem({ name, translation, type, numberSurah, ayahCount }) {
             </div>
             <div class="additionalInfo">
                 <div>${type}</div>
-                <div>${ayahCount} Ayat</div>
+                <div>${ayahCount} ${(getLanguage() === listLanguage.en) ? enLanguage.ayah : idLanguage.ayah}</div>
             </div>
         </a>
     `

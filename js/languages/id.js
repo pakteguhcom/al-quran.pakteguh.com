@@ -1,5 +1,6 @@
 const lang = {
-    search: 'Cari'
+    search: 'Cari',
+    ayah: 'Ayat'
 }
 
 export default lang
