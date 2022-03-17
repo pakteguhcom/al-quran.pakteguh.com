@@ -171,6 +171,12 @@
     font-family: 'Nunito', sans-serif;
 }
 
+.language-select {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 0.5rem;
+}
+
 #content .surahItem:hover {
     background-color: #f4fafe;
 }

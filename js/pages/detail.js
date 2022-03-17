@@ -1,4 +1,6 @@
 import apiEndpoint from '../constant/api-endpoint.js'
+import { getLanguage } from '../languages/index.js'
+import listLanguage from '../languages/list.js'
 
 document.addEventListener("DOMContentLoaded", main)
 
@@ -189,24 +191,42 @@ function renderNavbar({ type, number, name, ayahCount }) {
 function renderListAyahElements (quranData) {
     const ayahContainer = getAyahContainer()
     const audioControl = getAudioControl()
-    const preBismillah = quranData.preBismillah
-    const defaultValueListAyahElements = (preBismillah !== null) 
+
+    const getListAyahElements = (quranData) => {
+        const language = getLanguage()
+        const preBismillah = quranData.preBismillah
+        const defaultValueListAyahElements = (preBismillah !== null) 
         ? AyahItem({
             arabic: preBismillah.text.ar,
             read: preBismillah.text.read,
-            translation: preBismillah.translation.id
+            translation: (language === listLanguage.en) ? preBismillah.translation.en : preBismillah.translation.id
         }) : ''
 
-    const listAyahElements = quranData.ayahs.reduce((elements, ayah) => {
-        return elements + AyahItem({
-            juzNumber: ayah.juz,
-            ayahNumber: ayah.number.insurah,
-            arabic: ayah.text.ar,
-            read: ayah.text.read,
-            translation: ayah.translation.id 
-        })
-    }, defaultValueListAyahElements)
+        return quranData.ayahs.reduce((elements, ayah) => {
+            let ayahItem = ''
+            if (language === listLanguage.en) {
+                ayahItem = AyahItem({
+                    juzNumber: ayah.juz,
+                    ayahNumber: ayah.number.insurah,
+                    arabic: ayah.text.ar,
+                    read: ayah.text.read,
+                    translation: ayah.translation.en
+                })
+            } else {
+                ayahItem = AyahItem({
+                    juzNumber: ayah.juz,
+                    ayahNumber: ayah.number.insurah,
+                    arabic: ayah.text.ar,
+                    read: ayah.text.read,
+                    translation: ayah.translation.id
+                })
+            }
 
+            return elements + ayahItem
+        }, defaultValueListAyahElements)
+    }
+
+    const listAyahElements = getListAyahElements(quranData)
     ayahContainer.innerHTML = listAyahElements
     audioControl.src = quranData.recitation.full
     setListAyahElementsListener(quranData)

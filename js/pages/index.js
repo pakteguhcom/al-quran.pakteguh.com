@@ -1,4 +1,8 @@
 import apiEndpoint from '../constant/api-endpoint.js'
+import { setLanguage, getLanguage } from '../languages/index.js'
+import listLanguage from '../languages/list.js'
+import enLanguage from '../languages/en.js'
+import idLanguage from '../languages/id.js'
 
 document.addEventListener("DOMContentLoaded", main)
 
@@ -20,6 +24,8 @@ async function main() {
         const response = await fetch(endpoint)
         const responseJSON = await response.json()
         const quranData = responseJSON.data
+        initLanguageSelect()
+        initSearchBar(quranData)
         renderListSurahElements(quranData)
         
         mainApp.style.display = 'block'
@@ -78,6 +84,17 @@ function getNavbarContainer () {
 }
 
 /**
+ * Get search bar element
+ * @returns
+ */
+function getSearchBar () {
+    return {
+        container: getNavbarContainer().querySelector('.searchContainer'),
+        input: getNavbarContainer().querySelector('.searchContainer input')
+    }
+}
+
+/**
  * Build element for surah item
  * @param {object} quranData
  * @param {string} quranData.name
@@ -106,24 +123,68 @@ function SurahItem({ name, translation, type, numberSurah, ayahCount }) {
 }
 
 /**
- * Render surah item elements based from api data
+ * Get surah list elements based from api data
  * @param {*} quranData 
+ * @return 
  */
-function renderListSurahElements(quranData) {
-    const searchBar = getNavbarContainer().querySelector('.searchContainer input')
+function getSurahListElements (quranData) {
+    return quranData.reduce((elements, surah) => {
+        let surahItem = ''
+        const language = getLanguage()
 
-    const surahListElements = quranData.reduce((elements, surah) => {
-        return elements += SurahItem({
-            name: surah.asma.id.long,
-            translation: surah.asma.translation.id,
-            type: surah.type.id,
-            numberSurah: surah.number,
-            ayahCount: surah.ayahCount
-        })
+        if (language === listLanguage.en) {
+            surahItem = SurahItem({
+                name: surah.asma.en.long,
+                translation: surah.asma.translation.en,
+                type: surah.type.en,
+                numberSurah: surah.number,
+                ayahCount: surah.ayahCount
+            })
+        } else {
+            surahItem = SurahItem({
+                name: surah.asma.id.long,
+                translation: surah.asma.translation.id,
+                type: surah.type.id,
+                numberSurah: surah.number,
+                ayahCount: surah.ayahCount
+            })
+        }
+
+        return elements += surahItem
     }, '')
+}
 
-    getContentContainer().innerHTML = surahListElements
+/**
+ * Initialize select element to change language
+ */
+function initLanguageSelect () {
+    const languageSelect = document.querySelector('.language-select select')
     
+    if (getLanguage() === listLanguage.en) {
+        languageSelect.value = listLanguage.en
+    } else {
+        languageSelect.value = listLanguage.id
+    }
+
+    languageSelect.onchange = (event) => {
+        const language = event.target.value
+        setLanguage(language)
+        window.location.reload()
+    }
+}
+
+/**
+ * Init search bar to perform search surah
+ */
+function initSearchBar (quranData) {
+    const searchBar = getSearchBar().input
+
+    if (getLanguage() === listLanguage.en) {
+        searchBar.placeholder = enLanguage.search
+    } else {
+        searchBar.placeholder = idLanguage.search
+    }
+
     searchBar.oninput = (event) => {
         const filteredData = quranData.filter(surah => {
             const surahName = surah.asma.id.long.toLowerCase().replace(/\'+/g, '')
@@ -131,14 +192,14 @@ function renderListSurahElements(quranData) {
             return surahName.includes(searchQuery)
         })
 
-        getContentContainer().innerHTML = filteredData.reduce((elements, surah) => {
-            return elements += SurahItem({
-                name: surah.asma.id.long,
-                translation: surah.asma.translation.id,
-                type: surah.type.id,
-                numberSurah: surah.number,
-                ayahCount: surah.ayahCount
-            })
-        }, '')
+        getContentContainer().innerHTML = getSurahListElements(filteredData)
     }
+}
+
+/**
+ * Render surah item elements based from api data
+ * @param {*} quranData 
+ */
+function renderListSurahElements(quranData) {
+    getContentContainer().innerHTML = getSurahListElements(quranData)
 }
