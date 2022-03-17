@@ -1,8 +1,6 @@
 import apiEndpoint from '../constant/api-endpoint.js'
-import { setLanguage, getLanguage } from '../languages/index.js'
+import { setLanguage, getLanguage, getLanguageText } from '../languages/index.js'
 import listLanguage from '../languages/list.js'
-import enLanguage from '../languages/en.js'
-import idLanguage from '../languages/id.js'
 
 document.addEventListener("DOMContentLoaded", main)
 
@@ -116,7 +114,7 @@ function SurahItem({ name, translation, type, numberSurah, ayahCount }) {
             </div>
             <div class="additionalInfo">
                 <div>${type}</div>
-                <div>${ayahCount} ${(getLanguage() === listLanguage.en) ? enLanguage.ayah : idLanguage.ayah}</div>
+                <div>${ayahCount} ${getLanguageText('ayah')}</div>
             </div>
         </a>
     `
@@ -179,16 +177,19 @@ function initLanguageSelect () {
 function initSearchBar (quranData) {
     const searchBar = getSearchBar().input
 
-    if (getLanguage() === listLanguage.en) {
-        searchBar.placeholder = enLanguage.search
-    } else {
-        searchBar.placeholder = idLanguage.search
-    }
-
+    searchBar.placeholder = getLanguageText('search')
     searchBar.oninput = (event) => {
         const filteredData = quranData.filter(surah => {
-            const surahName = surah.asma.id.long.toLowerCase().replace(/\'+/g, '')
-            const searchQuery = event.target.value.toLowerCase()
+            /**
+             * Optimize search with regex and lowercase
+             * @param {string} text 
+             */
+            const queryOptimization = (text) => {
+                return text.replace(/\'+/g, '').replace(/\-+/g, ' ').toLowerCase()
+            }
+
+            const surahName = queryOptimization(surah.asma.id.long)
+            const searchQuery = queryOptimization(event.target.value)
             return surahName.includes(searchQuery)
         })
 
