@@ -1,4 +1,4 @@
-const baseURL = new URL('https://quran-endpoint.vercel.app')
+const baseURL = new URL('https://quran-data.vercel.app')
 
 const apiEndpoint = {
     listSurah: {

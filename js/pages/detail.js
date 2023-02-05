@@ -198,7 +198,7 @@ function renderListAyahElements (quranData) {
         const defaultValueListAyahElements = (preBismillah !== null) 
         ? AyahItem({
             arabic: preBismillah.text.ar,
-            read: preBismillah.text.read,
+            read: (language === listLanguage.en) ? preBismillah.text.read.en : preBismillah.text.read.id,
             translation: (language === listLanguage.en) ? preBismillah.translation.en : preBismillah.translation.id
         }) : ''
 
@@ -209,7 +209,7 @@ function renderListAyahElements (quranData) {
                     juzNumber: ayah.juz,
                     ayahNumber: ayah.number.insurah,
                     arabic: ayah.text.ar,
-                    read: ayah.text.read,
+                    read: ayah.text.read.en,
                     translation: ayah.translation.en
                 })
             } else {
@@ -217,7 +217,7 @@ function renderListAyahElements (quranData) {
                     juzNumber: ayah.juz,
                     ayahNumber: ayah.number.insurah,
                     arabic: ayah.text.ar,
-                    read: ayah.text.read,
+                    read: ayah.text.read.id,
                     translation: ayah.translation.id
                 })
             }
